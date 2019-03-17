@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
+require 'sinatra/activerecord'
 
 def is_barber_exists? db, name
 	db.execute('select * from Barbers where name=?', [name]).length > 0
@@ -52,7 +53,7 @@ configure do
 end
 
  get '/' do
-	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
+	erb "Hello!"			
 end
 
 get '/about' do
@@ -72,11 +73,11 @@ post '/visit' do
 	@color = params[:color]
 
 	# хеш
-	hh = { 	:username => 'Введите имя',
+	hh = { :username => 'Введите имя',
 			:phone => 'Введите телефон',
 			:datetime => 'Введите дату и время' }
 
-	@error = hh.select {|key,_| params[key] == ""}.values.join(", ")
+	@error = hh.select { |key, _| params[key] == "" }.values.join(", ")
 
 	if @error != ''
 		return erb :visit
